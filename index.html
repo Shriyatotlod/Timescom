@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="styles.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Time Stories API</title>
+  </head>
+  <body>
+    <h1>Time Stories</h1>
+    <button onclick="fetchTimeStories()">Fetch Stories</button>
+    <div id="stories"></div>
+
+    <script>
+      async function fetchTimeStories() {
+        try {
+          const response = await fetch("http://localhost:3000/getTimeStories");
+          const data = await response.json();
+          displayStories(data);
+        } catch (error) {
+          console.error("Error fetching stories:", error);
+        }
+      }
+
+      function displayStories(stories) {
+        const storiesContainer = document.getElementById("stories");
+        storiesContainer.innerHTML = "<h2>Latest Stories:</h2>";
+
+        stories.forEach((story) => {
+          const storyElement = document.createElement("div");
+          storyElement.classList.add("stories-item"); // Add the class to the story element
+          storyElement.innerHTML = `<a href="https://time.com${story.link}" target="_blank">${story.title}</a> - ${story.timestamp}`;
+          storiesContainer.appendChild(storyElement);
+        });
+      }
+    </script>
+  </body>
+</html>
